@@ -5,17 +5,18 @@ import { index, getQerry } from './Util.js';
 import 'dotenv/config'
 const API_KEY = [process.env.API_KEY1, process.env.API_KEY2, process.env.API_KEY3, process.env.API_KEY4, process.env.API_KEY5]
 
-let hit = 0;
+let hit = 0, globalHit = 0;
 const memo = {}
 const ExpireTime = 1000 * 60 * 30;
 console.log(ExpireTime)
 
 const server = http.createServer(async (req, res) => {
+    globalHit++;
     let q = getQerry(req.url)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    console.log("hit count", hit, "API_KEY index used", index(hit))
+    console.log("Hit On our Api: ", globalHit, ", hit: ", hit, ", API_KEY index :", index(hit))
     if (req.url.match(/\/api\/everything/) && req.method === "GET") {
         let url = 'https://newsapi.org/v2/everything?apiKey=' + API_KEY[index(hit)]
         try {
