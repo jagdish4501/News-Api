@@ -7,7 +7,10 @@ const myFunction = (url) => {
     }
     return attributes
 }
-
+const getQerry = (url) => {
+    const regex = /\?(.*)/;
+    return url.match(regex) ? url.match(regex)[1] : '';
+}
 const index = (hit) => {
     let temp = 50;
     for (let i = 0; i < 100; i++) {
@@ -19,4 +22,4 @@ const index = (hit) => {
 }
 
 const a = 1;
-export { myFunction, index };
+export { myFunction, index, getQerry };
