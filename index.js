@@ -1,4 +1,5 @@
 import http from 'http';
+import axios from 'axios'
 const PORT = 5000;
 import { myFunction, index } from './Util.js';
 import 'dotenv/config'
@@ -22,8 +23,8 @@ const server = http.createServer(async (req, res) => {
             url += q
             q += 'everything'
             if (!memo[q]) {
-                const data = await fetch(url);
-                memo[q] = await data.json()
+                const respose = await axios.get(url);
+                memo[q] = respose.data
                 hit++;
             }
             res.writeHead(200, { "Content-Type": "application/json" });
@@ -43,8 +44,8 @@ const server = http.createServer(async (req, res) => {
             url += q
             q += 'top-headlines'
             if (!memo[q]) {
-                const data = await fetch(url);
-                memo[q] = await data.json()
+                const respose = await axios.get(url);
+                memo[q] = respose.data
                 hit++;
             }
             res.writeHead(200, { "Content-Type": "application/json" });
@@ -53,7 +54,7 @@ const server = http.createServer(async (req, res) => {
         } catch (error) {
             console.error('Error fetching data:', error);
             res.writeHead(404, { "Content-Type": "application/json" });
-            res.end(JSON.stringify({ message: "Error se" }));
+            res.end(JSON.stringify({ message: error }));
         }
     }
     // If no route present
