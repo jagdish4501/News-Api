@@ -15,7 +15,7 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    console.log(hit, index(hit))
+    console.log("hit count", hit, "API_KEY index used", index(hit))
     if (req.url.match(/\/api\/everything/) && req.method === "GET") {
         let url = 'https://newsapi.org/v2/everything?apiKey=' + API_KEY[index(hit)]
         try {
