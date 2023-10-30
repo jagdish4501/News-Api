@@ -7,8 +7,13 @@ const myFunction = (url) => {
     }
     return attributes
 }
+
 const getQerry = (url) => {
     const regex = /\?(.*)/;
+    return url.match(regex) ? url.match(regex)[1] : '';
+}
+const getPath = (url) => {
+    const regex = /\/(.*)/
     return url.match(regex) ? url.match(regex)[1] : '';
 }
 const index = (hit) => {
@@ -21,5 +26,16 @@ const index = (hit) => {
     return 0;
 }
 
+function plain2html(text) {
+    text = (text || "");
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\t/g, "    ")
+        .replace(/ /g, "&nbsp;")
+        .replace(/\r\n|\r|\n/g, "<br />");
+}
+
 const a = 1;
-export { myFunction, index, getQerry };
+export { myFunction, index, getQerry, getPath, plain2html };
