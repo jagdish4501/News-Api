@@ -12,6 +12,7 @@ const getQerry = (url) => {
     const regex = /\?(.*)/;
     return url.match(regex) ? url.match(regex)[1] : '';
 }
+
 const getPath = (url) => {
     const regex = /\/(.*)/
     return url.match(regex) ? url.match(regex)[1] : '';

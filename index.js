@@ -8,9 +8,8 @@ import 'dotenv/config'
 const API_KEY = [process.env.API_KEY1, process.env.API_KEY2, process.env.API_KEY3, process.env.API_KEY4, process.env.API_KEY5]
 
 let hit = 0, globalHit = 0;
-const ExpireTime = 1000 * 60 * 30;
 
-setInterval(() => { hit = 0 }, (ExpireTime * 2 * 24));
+const ExpireTime = 1000 * 60 * 30;
 
 const server = http.createServer(async (req, res) => {
     globalHit++;
@@ -18,15 +17,15 @@ const server = http.createServer(async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    hit = hit % 250
     console.log("Hit On our Api: ", globalHit, ", hit: ", hit, ", API_KEY index :", index(hit))
-
     if (req.url.match(/\/api\/everything/) && req.method === "GET") {
         let url = 'https://newsapi.org/v2/everything?apiKey=' + API_KEY[index(hit)]
         url = url + '&' + q
         q += 'everything'
         try {
             if (!memo[q]) {
-                hit = (hit + 1) % 250
+                hit = (hit + 1)
                 console.log(url)
                 var respose = await axios.get(url);
                 memo[q] = {
@@ -51,7 +50,7 @@ const server = http.createServer(async (req, res) => {
         q += 'top-headlines'
         try {
             if (!memo[q]) {
-                hit = (hit + 1) % 250
+                hit = (hit + 1)
                 console.log(url)
                 const respose = await axios.get(url);
                 memo[q] = {
