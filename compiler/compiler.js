@@ -17,7 +17,7 @@ const compile = async (req, res) => {
             else if (language === 'python')
                 result = await Python_Compiler(code, input);
             else if (language === 'java')
-                result = await java_Compiler(code, input);
+                result = 'java compiler will we available soon';
         } catch (error) {
             console.error('Error parsing JSON or executing code:', error);
             success = false;

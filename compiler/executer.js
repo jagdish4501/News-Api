@@ -6,34 +6,13 @@ async function writeCodeToFile(code, filePath) {
 }
 
 
-async function compileCode(compileCommand, timeout = 1000) {
-    const compileProcess = spawn(compileCommand[0], compileCommand.slice(1));
-    const compilePromise = new Promise((resolve, reject) => {
-        compileProcess.on('exit', (code) => {
-            if (code === 0) {
-                resolve('Compilation successFull');
-            } else {
-                reject('Compilation failed due to syntax error or compile time error');
-            }
-        });
-    });
-    try {
-        const compiledStatus = await Promise.race([
-            compilePromise,
-            new Promise((_, reject) => {
-                const timerId = setTimeout(() => {
-                    compileProcess.kill();// Forcefully terminate the compile process on timeout
-                    reject('Compilation timeout')
-                }, timeout)
-                compileProcess.on('close', () => {
-                    clearTimeout(timerId);
-                });
-            })
-        ]);
-        return compiledStatus;
-    } catch (error) {
-        throw error;
-    }
+async function compileCode(compileCommand) {
+    spawn(compileCommand[0], compileCommand.slice(1));
+    return new Promise((resolve, _) => {
+        setTimeout(() => {
+            resolve('Compilation timeout')
+        }, 100)
+    })
 }
 
 async function executeCode(runCommand, input, timeout = 1000) {
@@ -76,13 +55,12 @@ async function executeCode(runCommand, input, timeout = 1000) {
 
 async function CPP_Compiler(Code, input) {
     const sourceFilePath = 'temp_cpp.cpp';
-    const outputFilePath = 'temp_cpp.exe';
+    const outputFilePath = 'temp_cpp';
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
         const compileCommand = ['g++', sourceFilePath, '-o', outputFilePath];
-        const isCompiled = await compileCode(compileCommand, timeout);
-        console.log(isCompiled)
+        await compileCode(compileCommand, timeout);
         const runCommand = [outputFilePath]
         const result = await executeCode(runCommand, input, timeout);
         await fs.unlink(sourceFilePath)
@@ -98,8 +76,7 @@ async function java_Compiler(Code, input) {
     try {
         await writeCodeToFile(Code, sourceFilePath);
         const compileCommand = ['javac', sourceFilePath];
-        const isCompiled = await compileCode(compileCommand, timeout);
-        console.log(isCompiled);
+        await compileCode(compileCommand, timeout);
         const runCommand = ['java', 'Temp']
         const result = await executeCode(runCommand, input, timeout);
         await fs.unlink(sourceFilePath);//code for deleting sourceFile
