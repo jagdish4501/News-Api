@@ -55,13 +55,12 @@ async function executeCode(runCommand, input, timeout = 1000) {
 
 async function CPP_Compiler(Code, input) {
     const sourceFilePath = 'temp_cpp.cpp';
-    const outputFilePath = './temp_cpp';
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
-        const compileCommand = ['g++', sourceFilePath, '-o', outputFilePath];
+        const compileCommand = ['g++', sourceFilePath];
         await compileCode(compileCommand, timeout);
-        const runCommand = [outputFilePath]
+        const runCommand = ['./a.out']
         const result = await executeCode(runCommand, input, timeout);
         // await fs.unlink(sourceFilePath)
         // await fs.unlink(outputFilePath)
