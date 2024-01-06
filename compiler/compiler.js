@@ -11,7 +11,7 @@ const compile = async (req, res) => {
         try {
             const { code, language, input } = JSON.parse(data);
             if (language === 'cpp' || language === 'c')
-                result = await CPP_Compiler(code, input);
+                result = 'c and c++ compiler will be available soon compiler will we available soon';
             else if (language === 'javascript')
                 result = await JS_Compiler(code, input);
             else if (language === 'python')
