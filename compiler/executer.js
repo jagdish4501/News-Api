@@ -4,16 +4,14 @@ import fs from 'fs/promises';
 async function writeCodeToFile(code, filePath) {
     await fs.writeFile(filePath, code);
 }
-
-
 async function compileCode(compileCommand, timeout = 1000) {
-    const compileProcess = spawn(compileCommand[0], compileCommand.slice(1));
+    const compileProcess = spawn(compileCommand[0], compileCommand.slice(1), { shell: true });
     const compilePromise = new Promise((resolve, reject) => {
         compileProcess.on('exit', (code) => {
             if (code === 0) {
                 resolve('Compilation successFull');
             } else {
-                reject('Compilation failed due to syntax error or compile time error');
+                reject('Compilation failed');
             }
         });
     });
@@ -37,7 +35,7 @@ async function compileCode(compileCommand, timeout = 1000) {
 }
 
 async function executeCode(runCommand, input, timeout = 1000) {
-    const runProcess = spawn(runCommand[0], runCommand.slice(1));
+    const runProcess = spawn(runCommand[0], runCommand.slice(1), { shell: true });
     const runPromise = new Promise((resolve, reject) => {
         runProcess.stdin.write(input);
         runProcess.stdin.end();
@@ -76,17 +74,16 @@ async function executeCode(runCommand, input, timeout = 1000) {
 
 async function CPP_Compiler(Code, input) {
     const sourceFilePath = 'temp_cpp.cpp';
-    const outputFilePath = 'temp_cpp.exe';
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
-        const compileCommand = ['g++', sourceFilePath, '-o', outputFilePath];
+        const compileCommand = ['g++', sourceFilePath];
         const isCompiled = await compileCode(compileCommand, timeout);
         console.log(isCompiled)
-        const runCommand = [outputFilePath]
+        const runCommand = ['a.exe']
         const result = await executeCode(runCommand, input, timeout);
         await fs.unlink(sourceFilePath)
-        await fs.unlink(outputFilePath)
+        await fs.unlink('./a.exe')
         return result;
     } catch (error) {
         return error;
@@ -115,7 +112,7 @@ async function JS_Compiler(Code, input) {
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
-        const runCommand = ['node', sourceFilePath]
+        const runCommand = ['node', 'temp_js.js']
         const result = await executeCode(runCommand, input, timeout);
         await fs.unlink(sourceFilePath)
         return result;
@@ -129,13 +126,23 @@ async function Python_Compiler(Code, input) {
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
-        const runCommand = ['python', 'temp_python.py']
+        const runCommand = ['python', 'temp_python.py'];
         const result = await executeCode(runCommand, input, timeout);
-        await fs.unlink(sourceFilePath)
+        await fs.unlink(sourceFilePath);
+        return result;
+    } catch (error) {
+        return error;
+    }
+}
+async function shell(script, input) {
+    const runCommand = script.replace(/\s+/g, ',').split(',');
+    const timeout = 2000;
+    try {
+        const result = await executeCode(runCommand, input, timeout);
         return result;
     } catch (error) {
         return error;
     }
 }
 
-export { CPP_Compiler, JS_Compiler, Python_Compiler, java_Compiler }
+export { CPP_Compiler, JS_Compiler, Python_Compiler, java_Compiler, shell }
