@@ -1,4 +1,4 @@
-import { CPP_Compiler, JS_Compiler, Python_Compiler, java_Compiler } from './executer.js';
+import { JS_Compiler, Python_Compiler } from './executer.js';
 
 const compile = async (req, res) => {
     let data = '';
@@ -24,7 +24,6 @@ const compile = async (req, res) => {
         }
         // Send response based on success flag
         if (success) {
-            console.log(result)
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ message: result }));
         } else {
