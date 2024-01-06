@@ -17,6 +17,7 @@ const getPath = (url) => {
     const regex = /\/(.*)/
     return url.match(regex) ? url.match(regex)[1] : '';
 }
+
 const index = (hit) => {
     let temp = 50;
     for (let i = 0; i < 100; i++) {
@@ -27,16 +28,4 @@ const index = (hit) => {
     return 0;
 }
 
-function plain2html(text) {
-    text = (text || "");
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\t/g, "    ")
-        .replace(/ /g, "&nbsp;")
-        .replace(/\r\n|\r|\n/g, "<br />");
-}
-
-const a = 1;
-export { myFunction, index, getQerry, getPath, plain2html };
+export { myFunction, index, getQerry, getPath };
