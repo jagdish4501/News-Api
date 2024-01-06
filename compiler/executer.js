@@ -55,7 +55,7 @@ async function executeCode(runCommand, input, timeout = 1000) {
 
 async function CPP_Compiler(Code, input) {
     const sourceFilePath = 'temp_cpp.cpp';
-    const outputFilePath = 'temp_cpp';
+    const outputFilePath = './temp_cpp';
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
