@@ -63,8 +63,8 @@ async function CPP_Compiler(Code, input) {
         await compileCode(compileCommand, timeout);
         const runCommand = [outputFilePath]
         const result = await executeCode(runCommand, input, timeout);
-        await fs.unlink(sourceFilePath)
-        await fs.unlink(outputFilePath)
+        // await fs.unlink(sourceFilePath)
+        // await fs.unlink(outputFilePath)
         return result;
     } catch (error) {
         return error;
