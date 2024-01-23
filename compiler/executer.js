@@ -90,17 +90,17 @@ async function CPP_Compiler(Code, input) {
     }
 }
 async function java_Compiler(Code, input) {
-    const sourceFilePath = 'Temp.java';
+    const sourceFilePath = 'Main.java';
     const timeout = 2000;
     try {
         await writeCodeToFile(Code, sourceFilePath);
         const compileCommand = ['javac', sourceFilePath];
         const isCompiled = await compileCode(compileCommand, timeout);
         console.log(isCompiled);
-        const runCommand = ['java', 'Temp']
+        const runCommand = ['java', 'Main']
         const result = await executeCode(runCommand, input, timeout);
         await fs.unlink(sourceFilePath);//code for deleting sourceFile
-        await fs.unlink('Temp.class');
+        await fs.unlink('Main.class');
         return result;
     } catch (error) {
         return error;

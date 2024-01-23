@@ -1,4 +1,4 @@
-import { JS_Compiler, Python_Compiler, shell } from './executer.js';
+import { CPP_Compiler, JS_Compiler, Python_Compiler, java_Compiler, shell } from './executer.js';
 
 const compile = async (req, res) => {
     let data = '';
@@ -11,13 +11,13 @@ const compile = async (req, res) => {
         try {
             const { code, language, input } = JSON.parse(data);
             if (language === 'cpp' || language === 'c')
-                result = 'c and c++ compiler will be available soon compiler will we available soon';
+                result = await CPP_Compiler(code, input);
             else if (language === 'javascript')
                 result = await JS_Compiler(code, input);
             else if (language === 'python')
                 result = await Python_Compiler(code, input);
             else if (language === 'java')
-                result = 'java compiler will we available soon';
+                result = await java_Compiler(code, input);
             else if (language === 'powershell')
                 result = await shell(code, input);
         } catch (error) {
